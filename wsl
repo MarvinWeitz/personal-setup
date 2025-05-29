@@ -1,5 +1,41 @@
+#############
+# Install WSL
+#############
+
+# Install Debian
+wsl --install Debian
+
+####################
+# MANUAL INPUT START
+####################
+
+# Create usernname
+# Create password
+# Confirm password
+
+##################
+# MANUAL INPUT END
+##################
+
+# Navigate to user root
+cd
+
+# Inital update and upgrade
+sudo apt update
+sudo apt upgrade -y
+
+####################
+# MANUAL INPUT START
+####################
+
+# Enter sudo password
+
+##################
+# MANUAL INPUT END
+##################
+
 # Install initial dependencies
-sudo apt install software-properties-common apt-transport-https wget gpg -y
+sudo apt install software-properties-common apt-transport-https wget curl gpg -y
 
 # Adjust package sources
 sudo sed -i '/^deb cdrom:/s/^/# /' /etc/apt/sources.list
@@ -41,7 +77,8 @@ sudo apt install git -y
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 # Install node
 sudo apt install nodejs -y
-
+# Upgrade to latest version
+npm install -g npm@latest
 
 #######################
 # Install node packages
