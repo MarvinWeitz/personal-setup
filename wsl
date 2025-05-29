@@ -45,6 +45,33 @@ echo "deb http://deb.debian.org/debian bookworm-updates main" | sudo tee -a /etc
 
 
 #############
+# Install zsh
+#############
+
+# Install zsh
+sudo apt install zsh -y
+
+# Configure auto navigation when starting from Windows user directory
+# MULTILINE COMMAND START
+cat >> ~/.zshrc << 'EOF'
+
+# Auto-navigate to home directory when starting from Windows user directory
+if [[ "$PWD" == /mnt/c/Users/* ]]; then
+    cd ~
+fi
+EOF
+
+# MULTILINE COMMAND END
+
+# Set zsh as default shell
+chsh -s $(which zsh)
+
+#######################
+# Install Powerlevel10k
+#######################
+
+
+#############
 # Install git
 #############
 
@@ -86,25 +113,6 @@ echo "deb [signed-by=/usr/share/keyrings/cli.cloudfoundry.org.gpg] https://packa
 sudo apt-get update
 # Install cf CLI v8
 sudo apt-get install cf8-cli
-
-
-#############
-# Install zsh
-#############
-
-# Install zsh
-sudo apt install zsh -y
-# Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# Configure auto navigation when starting from Windows user directory
-cat >> ~/.zshrc << 'EOF'
-
-# Auto-navigate to home directory when starting from Windows user directory
-if [[ "$PWD" == /mnt/c/Users/* ]]; then
-    cd ~
-fi
-EOF
-
 
 ###################
 # Install Miniconda
