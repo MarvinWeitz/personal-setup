@@ -60,7 +60,6 @@ if [[ "$PWD" == /mnt/c/Users/* ]]; then
     cd ~
 fi
 EOF
-
 # MULTILINE COMMAND END
 
 # Set zsh as default shell
@@ -90,9 +89,10 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 # Install node
 sudo apt install nodejs -y
 
-#######################
-# Install node packages
-#######################
+
+###########################
+# Install dev node packages
+###########################
 
 # Upgrade to latest npm version
 sudo npm install -g npm@latest
@@ -103,6 +103,18 @@ sudo npm i -g @sap/cds-dk mbt typescript ts-node
 # Packages for UI5 and Fiori
 sudo npm i -g yo @sap/generator-fiori generator-easy-ui5 
 
+
+###########################
+# Enable YubiKey Usage
+###########################
+
+# Create necessary directories
+mkdir -p ~/.ssh
+# Install socat
+sudo apt install socat scdaemon -y
+# Install wsl2-ssh-pagent
+wget https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/download/v1.4.0/wsl2-ssh-pageant.exe -O ~/.ssh/wsl2-ssh-pageant.exe
+chmod +x ~/.ssh/wsl2-ssh-pageant.exe
 
 ##########################
 # Install CloudFoundry CLI
