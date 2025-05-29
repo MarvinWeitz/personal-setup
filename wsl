@@ -44,24 +44,6 @@ echo "deb http://security.debian.org/debian-security bookworm-security main" | s
 echo "deb http://deb.debian.org/debian bookworm-updates main" | sudo tee -a /etc/apt/sources.list
 
 
-#################
-# Install VC Code
-#################
-
-# Download Microsoft GPG Key
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-# Install GPG Key
-sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-# Add VS Code repository
-sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-# Update again
-sudo apt update
-# Install code
-sudo apt install code -y
-# Cleanup
-rm packages.microsoft.gpg
-
-
 #############
 # Install git
 #############
@@ -77,12 +59,13 @@ sudo apt install git -y
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 # Install node
 sudo apt install nodejs -y
-# Upgrade to latest version
-npm install -g npm@latest
 
 #######################
 # Install node packages
 #######################
+
+# Upgrade to latest npm version
+sudo npm install -g npm@latest
 
 # Packages for CAP
 sudo npm i -g @sap/cds-dk mbt typescript ts-node
@@ -103,3 +86,51 @@ echo "deb [signed-by=/usr/share/keyrings/cli.cloudfoundry.org.gpg] https://packa
 sudo apt-get update
 # Install cf CLI v8
 sudo apt-get install cf8-cli
+
+
+#############
+# Install zsh
+#############
+
+# Install zsh
+sudo apt install zsh -y
+# Install Oh My Zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Configure auto navigation when starting from Windows user directory
+cat >> ~/.zshrc << 'EOF'
+
+# Auto-navigate to home directory when starting from Windows user directory
+if [[ "$PWD" == /mnt/c/Users/* ]]; then
+    cd ~
+fi
+EOF
+
+
+###################
+# Install Miniconda
+###################
+
+# Note: Keep at the end of scirpt to prevent re-entering sudo password
+
+# Make temp dir
+mkdir -p ~/miniconda3
+# Download installation script
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+# Run installation script in silent mode
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+# Remove installation script
+rm ~/miniconda3/miniconda.sh
+
+# Refresh terminal
+source ~/miniconda3/bin/activate
+
+# Initialze conda
+conda init --all
+
+
+##################################
+# Install VC Code Server for Linux
+##################################
+
+# Trigger install
+code -v
