@@ -48,10 +48,20 @@ echo "deb http://deb.debian.org/debian bookworm-updates main" | sudo tee -a /etc
 #############
 
 sudo apt install git -y
-# Configure git
+# Configure git user
 git config --global user.name MarvinWeitz
 git config --global user.email dev@marvinweitz.com
-
+# Configure pull behavior
+git config --global pull.rebase true
+git config --global rerere.enabled true
+# Output config
+git config --global column.ui auto
+git config --global branch.sort -committerdate
+# Configure alias
+git config --global alias.staash 'stash --all'
+git config --global alias.bblame 'blame -w -C -C -C'
+git config --global alias.lol 'log --oneline --decorate'
+git config --global alias.graph 'log --oneline --graph'
 
 #############
 # Install zsh
