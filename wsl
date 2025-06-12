@@ -62,6 +62,45 @@ git config --global alias.staash 'stash --all'
 git config --global alias.bblame 'blame -w -C -C -C'
 git config --global alias.lol 'log --oneline --decorate'
 git config --global alias.graph 'log --oneline --graph'
+git config --global alias.publish '!git push --set-upstream origin $(git branch --show-current)'
+git config --global alias.cleanup-branches '!f() {
+  protected=$(git config --get cleanup.protectedBranches | tr "," " ");
+  current_branch=$(git symbolic-ref --short HEAD);
+  deleted_any=false;
+
+  for branch in $(git branch --format="%(refname:short)"); do
+    skip=false;
+    [ "$branch" = "$current_branch" ] && skip=true;
+    for p in $protected; do
+      [ "$branch" = "$p" ] && skip=true && break;
+    done;
+    if [ "$skip" = true ]; then
+      continue;
+    fi
+
+    upstream=$(git for-each-ref --format="%(upstream:short)" refs/heads/"$branch")
+    if [ -z "$upstream" ]; then
+      echo "  Skipping $branch - No upstream tracking branch"
+      continue;
+    fi
+
+    if git branch -d "$branch" >/dev/null 2>&1; then
+      if [ "$deleted_any" = false ]; then
+        echo "Deleting branches:";
+        deleted_any=true;
+      fi
+      echo "  $branch - Remote: $upstream"
+    else
+      echo "Not deleting $branch - Remote: $upstream (not merged or has unpushed commits)"
+    fi
+  done
+
+  if [ "$deleted_any" = false ]; then
+    echo "No branches to delete."
+  fi
+}; f'
+
+
 
 #############
 # Install zsh
