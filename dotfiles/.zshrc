@@ -72,3 +72,5 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Disable Powerlevel10k instant prompt if it was enabled at the top of this file
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
