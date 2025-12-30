@@ -5,7 +5,10 @@ if ($confirm -ne "Y" -and $confirm -ne "y") {
     exit
 }
 
+# -------------------------------
 # List of windows store applications to install
+# -------------------------------
+
 $apps = @(
     @{Name="Brave Browser"; Id="XP8C9QZMS2PC1T"},
     @{Name="SoundCloud"; Id="9NVJBT29B36L"},
@@ -27,7 +30,10 @@ foreach ($app in $apps) {
     Start-Sleep -Seconds 1
 }
 
+# -------------------------------
 # List of external applications to install via winget
+# -------------------------------
+
 $externalApps = @(
     @{Name="Bruno"; Id="bruno.bruno"}
 )
@@ -39,7 +45,10 @@ foreach ($app in $externalApps) {
     Start-Sleep -Seconds 1
 }
 
+# -------------------------------
 # Install external applications via direct download
+# -------------------------------
+
 $downloadApps = @(
     # Install docker via direct download as winget does not aut update
     @{Name="Docker"; Url="https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"; Arguments="install" }
@@ -59,9 +68,10 @@ foreach ($app in $downloadApps) {
     Start-Sleep -Seconds 1
 }
 
-# All apps with more complex install
-
 # -------------------------------
+# All apps with more complex install
+# -------------------------------
+
 # Download Latest LibreOffice Portable Multilingual-Standard
 # -------------------------------
 
@@ -113,3 +123,28 @@ Start-Process -FilePath $installerPath -Wait
 
 Remove-Item $installerPath
 Start-Sleep -Seconds 1
+
+# -------------------------------
+# Windows settings
+# -------------------------------
+
+# Enable Clipboard history
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Value 1
+
+# Explorer:
+# Show hidden files
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Value 1
+# Show file extensions
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Value 0
+# Restart
+Stop-Process -Name explorer -Force
+
+# Taskbar:
+# Hide search box
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Value 0
+# Disable Task View
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Value 0
+# Enable multi-display taskbar
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "MMTaskbarEnabled" -Value 1
+# Restart
+Stop-Process -Name explorer -Force
