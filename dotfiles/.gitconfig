@@ -19,3 +19,5 @@
 	autoSetupMerge = simple
 [rerere]
 	enabled = true
+[credential]
+	useHttpPath = true
