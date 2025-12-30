@@ -58,3 +58,58 @@ foreach ($app in $downloadApps) {
     Remove-Item $installerPath
     Start-Sleep -Seconds 1
 }
+
+# All apps with more complex install
+
+# -------------------------------
+# Download Latest LibreOffice Portable Multilingual-Standard
+# -------------------------------
+
+# Base URL
+$baseUrl = "https://portableapps.com"
+$paUrl = "$baseUrl/apps/office/libreoffice_portable"
+
+# Downloads folder
+$downloadsFolder = Join-Path $env:USERPROFILE "Downloads"
+
+# Fetch page HTML
+try {
+    $page = Invoke-WebRequest -Uri $paUrl -UseBasicParsing
+} catch {
+    Write-Error "Failed to fetch page: $_"
+    exit 1
+}
+
+# Find first link ending with .paf.exe and containing MultilingualStandard
+$linkObj = ($page.Links |
+    Where-Object { $_.href -match "\.paf\.exe$" -and $_.href -match "MultilingualStandard" } |
+    Select-Object -First 1)
+
+if (-not $linkObj) {
+    Write-Error "Could not find a Multilingual-Standard .paf.exe download link"
+    exit 1
+}
+
+$downloadLink = $linkObj.href
+
+# Convert relative URL to full URL
+if ($downloadLink -like "/redir2/*") {
+    $downloadLink = $baseUrl + $downloadLink
+}
+
+# Extract filename from 'f=' parameter
+if ($downloadLink -match "f=([^&]+)") {
+    $filename = $matches[1]
+} else {
+    $filename = "LibreOfficePortable_MultilingualStandard.paf.exe"
+}
+
+$installerPath = "$env:TEMP\$filename"
+Write-Host "Downloading and installing LibreOffice Portable..." -ForegroundColor Green
+Start-BitsTransfer -Source $downloadLink -Destination $installerPath -Description "Downloading LibreOffice Portable"
+
+Write-Host "Running installer for LibreOffice Portable..." -ForegroundColor Green
+Start-Process -FilePath $installerPath -Wait
+
+Remove-Item $installerPath
+Start-Sleep -Seconds 1
