@@ -27,6 +27,8 @@ sudo dnf remove docker \
 sudo dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
 sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 sudo systemctl enable --now docker
+sudo groupadd docker
+sudo usermod -aG docker $USER
 
 echo "=== Configuring Monitor Layout ==="
 kscreen-doctor \
@@ -70,5 +72,6 @@ cat <<EOF
   - Bitwarden: Login on desktop
   - Brave: Activate sync (Bookmarks, Settings, Extensions, Themes)
   - Brave: Login on Bitwarden extension
+  - Docker: Lougout to apply docker group
 
 EOF
