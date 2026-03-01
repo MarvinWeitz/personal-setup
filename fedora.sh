@@ -23,6 +23,7 @@ kscreen-doctor \
   output.DP-11.scale.1.7 \
   output.DP-11.position.2259,0 \
   output.DP-11.enable \
+  output.DP-11.primary \
   output.DP-10.mode.3840x2160@60 \
   output.DP-10.scale.1.7 \
   output.DP-10.position.4518,0 \
