@@ -1,5 +1,7 @@
 echo "=== Install git ==="
 sudo dnf install git -y
+git config --global user.name Marvin Weitz
+git config --global user.email dev@marvinweitz.com
 
 echo "=== Installing Brave ==="
 curl -fsS https://dl.brave.com/install.sh | sh
