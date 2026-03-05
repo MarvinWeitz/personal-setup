@@ -1,12 +1,18 @@
+echo "=== Install git ==="
+sudo dnf install git -y
+
 echo "=== Installing Brave ==="
 curl -fsS https://dl.brave.com/install.sh | sh
 
 echo "=== Uninstalling Firefox ==="
 sudo dnf remove -y firefox || true
 
-echo "=== installing Bitwarden ==="
+echo "=== Installing Bitwarden ==="
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak install -y flathub com.bitwarden.desktop
+
+echo "=== Installing Discord ==="
+flatpak install flathub com.discordapp.Discord -y
 
 echo "=== Installing VSCode ==="
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
@@ -73,5 +79,6 @@ cat <<EOF
   - Brave: Activate sync (Bookmarks, Settings, Extensions, Themes)
   - Brave: Login on Bitwarden extension
   - Docker: Lougout to apply docker group
+  - Proton Mail: Install Proton Mail - https://proton.me/mail/download
 
 EOF
