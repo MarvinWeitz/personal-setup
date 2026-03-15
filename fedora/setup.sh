@@ -11,7 +11,12 @@ sudo dnf remove -y firefox || true
 
 echo "=== Installing Bitwarden ==="
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak install -y flathub com.bitwarden.desktop
+flatpak install flathub com.bitwarden.desktop -y
+
+echo "=== Configuring Bitwarden with Biometrics ==="
+sudo wget -O /usr/share/polkit-1/actions/com.bitwarden.Bitwarden.policy https://raw.githubusercontent.com/bitwarden/clients/main/apps/desktop/resources/com.bitwarden.desktop.policy
+sudo chown root:root /usr/share/polkit-1/actions/com.bitwarden.Bitwarden.policy
+sudo chcon system_u:object_r:usr_t:s0 /usr/share/polkit-1/actions/com.bitwarden.Bitwarden.policy
 
 echo "=== Installing Discord ==="
 flatpak install flathub com.discordapp.Discord -y
@@ -78,6 +83,7 @@ cat <<EOF
 === Manual TODOs ===
   - VSCode: Login to Github
   - Bitwarden: Login on desktop
+  - Bitwarden: Settings (5 Min Timeout, Unlock with system authentication, Clear clipoard after 30 seconds
   - Brave: Activate sync (Bookmarks, Settings, Extensions, Themes)
   - Brave: Login on Bitwarden extension
   - Docker: Lougout to apply docker group
