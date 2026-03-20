@@ -78,6 +78,9 @@ echo "=== Configuring KRunner ==="
 kwriteconfig6 --file krunnerrc --group "General" --key "FreeFloating" "true"
 kwriteconfig6 --file kglobalshortcutsrc --group "services" --group "org.kde.krunner.desktop" --key "_launch" "Alt+Space\tMeta+Space"
 
+echo "=== Configuring Dolphin ==="
+kwriteconfig6 --file dolphinrc --group General --key ShowFullPathInTitlebar true
+
 cat <<EOF
 
 === Manual TODOs ===
